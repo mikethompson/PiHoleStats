@@ -1,3 +1,9 @@
+#Simple Bash script to pull PiHole API
+#and post to Twitter.
+#Requires Twurl installed and configured
+#to a Twitter development account
+#Schedule to run via Cron
+
 #!/bin/bash
 
 # Settings
@@ -19,7 +25,7 @@ ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
 UNIQUEDOMAINS=$(printf "%'d" "$UNIQUEDOMAINS")
 QUERIESFORWARDED=$(printf "%'d" "$QUERIESFORWARDED")
 NEWLINE='\n'
-STRUpload=("Today, I have blocked $ADSBLOCKEDTODAY advertisments (${ADSPERCENTTODAY%.*}%) and processed $DNSQUERIESTODAY DNS Queries) #pihole")
+STRUpload=("Today, I have blocked $ADSBLOCKEDTODAY advertisments (${ADSPERCENTTODAY%.*}%) and processed $DNSQUERIESTODAY DNS Queries #pihole")
 #echo -e $STRUpload
 twurl -q -d status="$STRUpload" /1.1/statuses/update.json
 #EOF
