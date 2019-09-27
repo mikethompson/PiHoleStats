@@ -1,13 +1,14 @@
+#!/bin/bash
 #Simple Bash script to pull PiHole API
 #and post to Twitter.
 #Requires Twurl installed and configured
 #to a Twitter development account
 #Schedule to run via Cron
-
-#!/bin/bash
+#Michael Thompson 2019
+#mikethompson@gmx.co.uk (GPG Key-ID: 062C03D9)
 
 # Settings
-PIHOLE_IP="192.168.0.8"  # PiHole IP
+PIHOLE_IP="192.168.0.8"  # Set this to your PiHole IP
 
 # Get data from Pi_Hole API
 INPUT=$(curl -s "http://$PIHOLE_IP/admin/api.php")
@@ -26,6 +27,6 @@ UNIQUEDOMAINS=$(printf "%'d" "$UNIQUEDOMAINS")
 QUERIESFORWARDED=$(printf "%'d" "$QUERIESFORWARDED")
 NEWLINE='\n'
 STRUpload=("Today, I have blocked $ADSBLOCKEDTODAY advertisments (${ADSPERCENTTODAY%.*}%) and processed $DNSQUERIESTODAY DNS Queries #pihole")
-#echo -e $STRUpload
+
 twurl -q -d status="$STRUpload" /1.1/statuses/update.json
 #EOF
