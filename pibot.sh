@@ -8,13 +8,9 @@
 #mikethompson@gmx.co.uk (GPG Key-ID: 062C03D9)
 
 # Settings
-<<<<<<< HEAD
 PIHOLE_IP="192.168.0.8"  # PiHole IP
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-=======
-PIHOLE_IP="192.168.0.8"  # Set this to your PiHole IP
 
->>>>>>> 08d77a8817315ee8327bd67488589cdf172f8019
 # Get data from Pi_Hole API
 INPUT=$(curl -s "http://$PIHOLE_IP/admin/api.php")
 DOMAINSBLOCKED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $2}')
@@ -25,7 +21,6 @@ UNIQUEDOMAINS=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $10}')
 QUERIESFORWARDED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $12}')
 
 #Make data more readable
-<<<<<<< HEAD
 #DOMAINSBLOCKED=$(printf "%'d" "$DOMAINSBLOCKED")
 #DNSQUERIESTODAY=$(printf "%'d" "$DNSQUERIESTODAY")
 #ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
@@ -35,15 +30,5 @@ QUERIESFORWARDED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $12}')
 STRUpload="Today, I have blocked $ADSBLOCKEDTODAY advertisments and processed $DNSQUERIESTODAY DNS Queries #pihole"
 echo -e $STRUpload
 twurl -d status="$STRUpload" /1.1/statuses/update.json
-=======
-DOMAINSBLOCKED=$(printf "%'d" "$DOMAINSBLOCKED")
-DNSQUERIESTODAY=$(printf "%'d" "$DNSQUERIESTODAY")
-ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
-UNIQUEDOMAINS=$(printf "%'d" "$UNIQUEDOMAINS")
-QUERIESFORWARDED=$(printf "%'d" "$QUERIESFORWARDED")
-NEWLINE='\n'
-STRUpload=("Today, I have blocked $ADSBLOCKEDTODAY advertisments (${ADSPERCENTTODAY%.*}%) and processed $DNSQUERIESTODAY DNS Queries #pihole")
 
-twurl -q -d status="$STRUpload" /1.1/statuses/update.json
->>>>>>> 08d77a8817315ee8327bd67488589cdf172f8019
 #EOF
