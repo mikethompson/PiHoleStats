@@ -22,8 +22,8 @@ QUERIESFORWARDED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $12}')
 
 #Make data more readable
 #DOMAINSBLOCKED=$(printf "%'d" "$DOMAINSBLOCKED")
-#DNSQUERIESTODAY=$(printf "%'d" "$DNSQUERIESTODAY")
-#ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
+DNSQUERIESTODAY=$(printf "%'d" "$DNSQUERIESTODAY")
+ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
 #UNIQUEDOMAINS=$(printf "%'d" "$UNIQUEDOMAINS")
 #QUERIESFORWARDED=$(printf "%'d" "$QUERIESFORWARDED")
 #NEWLINE='\n'
