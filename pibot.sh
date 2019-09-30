@@ -8,7 +8,7 @@
 #mikethompson@gmx.co.uk (GPG Key-ID: 062C03D9)
 
 # Settings
-PIHOLE_IP="192.168.0.8"  # PiHole IP
+PIHOLE_IP="192.168.0.8"  # Your PiHole IP
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
 
 # Get data from Pi_Hole API
