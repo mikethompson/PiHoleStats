@@ -10,6 +10,9 @@
 # Settings
 PIHOLE_IP="192.168.0.8"  # Your PiHole IP
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+WEEKLY_INFO=1 #Set this to 0 to disable weekly information
+dnsdata='/home/pi/Script/piholestats/data_dns_today.txt'
+adsdata='/home/pi/Script/piholestats/data_adsblocked_today.txt'
 
 # Get data from Pi_Hole API
 INPUT=$(curl -s "http://$PIHOLE_IP/admin/api.php")
@@ -19,6 +22,8 @@ ADSBLOCKEDTODAY=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $6}')
 ADSPERCENTTODAY=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $8}')
 UNIQUEDOMAINS=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $10}')
 QUERIESFORWARDED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $12}')
+echo $DNSQUERIESTODAY >> $dnsdata
+echo $ADSBLOCKEDTODAY >> $adsdata
 
 #Make data more readable
 #DOMAINSBLOCKED=$(printf "%'d" "$DOMAINSBLOCKED")
@@ -30,5 +35,41 @@ ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
 STRUpload="Today, I have blocked $ADSBLOCKEDTODAY advertisments and processed $DNSQUERIESTODAY DNS Queries #pihole"
 echo -e $STRUpload
 twurl -d status="$STRUpload" /1.1/statuses/update.json
+
+if [ $WEEKLY_INFO = 1 ]; then
+
+#DATE LOGIC REQUIRED HERE IN IF/THEN/ELSE
+
+if [ -f "$dnsdata" ]; then
+echo "DNS Count Files Exists"
+ while read p;
+do
+totalDNS=$(( $totalDNS + $p ))
+done < $dnsdata
+fi
+
+if [ -f "$adsdata" ]; then
+    echo "ADS Count File Exists"
+ while read p; 
+do
+totalADS=$(( $totalADS + $p ))
+done < $adsdata
+fi
+
+totalDNS=$(printf "%'d" "$totalDNS")
+totalADS=$(printf "%'d" "$totalADS")
+
+echo "DNS Queries for the Week is $totalDNS"
+echo "Ads Blocked this week is  $totalADS"
+
+echo "This week, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
+
+else
+echo "Don't Run Weekly"
+fi
+
+
+
+
 
 #EOF
