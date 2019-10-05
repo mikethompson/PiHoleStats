@@ -10,7 +10,7 @@
 # Settings
 PIHOLE_IP="192.168.0.8"  # Your PiHole IP
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-WEEKLY_INFO=1 #Set this to 0 to disable weekly information
+MONTH_INFO=1 #Set this to 0 to disable weekly information
 dnsdata='/home/pi/Script/piholestats/data_dns_today.txt'
 adsdata='/home/pi/Script/piholestats/data_adsblocked_today.txt'
 
@@ -36,9 +36,14 @@ STRUpload="Today, I have blocked $ADSBLOCKEDTODAY advertisments and processed $D
 echo -e $STRUpload
 twurl -d status="$STRUpload" /1.1/statuses/update.json
 
-if [ $WEEKLY_INFO = 1 ]; then
+if [ $MONTH_INFO = 1 ]; then
 
-#DATE LOGIC REQUIRED HERE IN IF/THEN/ELSE
+current_date=$(date +'%d')
+
+
+if [[ $(date -d "+1 day" +%m) != $(date +%m) ]]
+then
+    echo "Today is the last day of the month"
 
 if [ -f "$dnsdata" ]; then
 echo "DNS Count Files Exists"
@@ -62,8 +67,12 @@ totalADS=$(printf "%'d" "$totalADS")
 echo "DNS Queries for the Week is $totalDNS"
 echo "Ads Blocked this week is  $totalADS"
 
-echo "This week, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
-
+twurl -d  status="This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries" /1.1/statuses/update.json
+echo "This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
+rm $adsdata
+rm $dnsdata 
+fi
+  
 else
 echo "Don't Run Weekly"
 fi
