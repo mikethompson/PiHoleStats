@@ -40,7 +40,7 @@ if [ $MONTH_INFO = 1 ]; then
 
 current_date=$(date +'%d')
 
-
+#find last month day
 if [[ $(date -d "+1 day" +%m) != $(date +%m) ]]
 then
     echo "Today is the last day of the month"
