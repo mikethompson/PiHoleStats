@@ -22,8 +22,13 @@ ADSBLOCKEDTODAY=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $6}')
 ADSPERCENTTODAY=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $8}')
 UNIQUEDOMAINS=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $10}')
 QUERIESFORWARDED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $12}')
+
+if [ "${TERM:-dumb}$PS1" != "dumb" ]; then
+  echo "This is not a cron job"
+else
 echo $DNSQUERIESTODAY >> $dnsdata
 echo $ADSBLOCKEDTODAY >> $adsdata
+fi
 
 #Make data more readable
 #DOMAINSBLOCKED=$(printf "%'d" "$DOMAINSBLOCKED")
@@ -36,6 +41,9 @@ STRUpload="Today, I have blocked $ADSBLOCKEDTODAY advertisments and processed $D
 echo -e $STRUpload
 twurl -d status="$STRUpload" /1.1/statuses/update.json
 
+if [ "${TERM:-dumb}$PS1" != "dumb" ]; then
+  echo "This is not a cron job"
+else
 if [ $MONTH_INFO = 1 ]; then
 
 current_date=$(date +'%d')
@@ -43,10 +51,10 @@ current_date=$(date +'%d')
 #find last month day
 if [[ $(date -d "+1 day" +%m) != $(date +%m) ]]
 then
-    echo "Today is the last day of the month"
+    echo -e "Today is the last day of the month"
 
 if [ -f "$dnsdata" ]; then
-echo "DNS Count Files Exists"
+echo -e "DNS Count Files Exists"
  while read p;
 do
 totalDNS=$(( $totalDNS + $p ))
@@ -54,7 +62,7 @@ done < $dnsdata
 fi
 
 if [ -f "$adsdata" ]; then
-    echo "ADS Count File Exists"
+    echo -e "ADS Count File Exists"
  while read p; 
 do
 totalADS=$(( $totalADS + $p ))
@@ -64,20 +72,20 @@ fi
 totalDNS=$(printf "%'d" "$totalDNS")
 totalADS=$(printf "%'d" "$totalADS")
 
-echo "DNS Queries for the Week is $totalDNS"
-echo "Ads Blocked this week is  $totalADS"
+echo -e "DNS Queries for the Month is $totalDNS"
+echo -e "Ads Blocked this Month is  $totalADS"
 
 twurl -d  status="This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries" /1.1/statuses/update.json
-echo "This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
+echo -e "This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
 rm $adsdata
 rm $dnsdata 
 fi
   
 else
-echo "Don't Run Weekly"
+echo -e "Don't Run Monthly"
 fi
 
-
+fi
 
 
 
