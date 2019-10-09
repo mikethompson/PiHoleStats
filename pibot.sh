@@ -22,8 +22,13 @@ ADSBLOCKEDTODAY=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $6}')
 ADSPERCENTTODAY=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $8}')
 UNIQUEDOMAINS=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $10}')
 QUERIESFORWARDED=$(echo "$INPUT" | awk -v FS="(:|,)" '{print $12}')
+
+if [ "${TERM:-dumb}$PS1" != "dumb" ]; then
+  echo "This is not a cron job"
+else
 echo $DNSQUERIESTODAY >> $dnsdata
 echo $ADSBLOCKEDTODAY >> $adsdata
+fi
 
 #Make data more readable
 #DOMAINSBLOCKED=$(printf "%'d" "$DOMAINSBLOCKED")
