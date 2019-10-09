@@ -36,6 +36,9 @@ STRUpload="Today, I have blocked $ADSBLOCKEDTODAY advertisments and processed $D
 echo -e $STRUpload
 twurl -d status="$STRUpload" /1.1/statuses/update.json
 
+if [ "${TERM:-dumb}$PS1" != "dumb" ]; then
+  echo "This is not a cron job"
+else
 if [ $MONTH_INFO = 1 ]; then
 
 current_date=$(date +'%d')
@@ -77,7 +80,7 @@ else
 echo -e "Don't Run Monthly"
 fi
 
-
+fi
 
 
 
