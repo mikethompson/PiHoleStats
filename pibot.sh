@@ -43,10 +43,10 @@ current_date=$(date +'%d')
 #find last month day
 if [[ $(date -d "+1 day" +%m) != $(date +%m) ]]
 then
-    echo "Today is the last day of the month"
+    echo -e "Today is the last day of the month"
 
 if [ -f "$dnsdata" ]; then
-echo "DNS Count Files Exists"
+echo -e "DNS Count Files Exists"
  while read p;
 do
 totalDNS=$(( $totalDNS + $p ))
@@ -54,7 +54,7 @@ done < $dnsdata
 fi
 
 if [ -f "$adsdata" ]; then
-    echo "ADS Count File Exists"
+    echo -e "ADS Count File Exists"
  while read p; 
 do
 totalADS=$(( $totalADS + $p ))
@@ -64,17 +64,17 @@ fi
 totalDNS=$(printf "%'d" "$totalDNS")
 totalADS=$(printf "%'d" "$totalADS")
 
-echo "DNS Queries for the Week is $totalDNS"
-echo "Ads Blocked this week is  $totalADS"
+echo -e "DNS Queries for the Month is $totalDNS"
+echo -e "Ads Blocked this Month is  $totalADS"
 
 twurl -d  status="This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries" /1.1/statuses/update.json
-echo "This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
+echo -e "This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
 rm $adsdata
 rm $dnsdata 
 fi
   
 else
-echo "Don't Run Weekly"
+echo -e "Don't Run Monthly"
 fi
 
 
