@@ -37,7 +37,7 @@ ADSBLOCKEDTODAY=$(printf "%'d" "$ADSBLOCKEDTODAY")
 #UNIQUEDOMAINS=$(printf "%'d" "$UNIQUEDOMAINS")
 #QUERIESFORWARDED=$(printf "%'d" "$QUERIESFORWARDED")
 #NEWLINE='\n'
-STRUpload="Today, I have blocked $ADSBLOCKEDTODAY advertisments and processed $DNSQUERIESTODAY DNS Queries #pihole"
+STRUpload="Today, I have blocked $ADSBLOCKEDTODAY queries, and processed $DNSQUERIESTODAY DNS Queries #pihole"
 echo -e $STRUpload
 twurl -d status="$STRUpload" /1.1/statuses/update.json
 
