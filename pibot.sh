@@ -78,9 +78,12 @@ echo -e "Ads Blocked this Month is  $totalADS"
 twurl -d  status="This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries" /1.1/statuses/update.json
 echo -e "This month, I have blocked $totalADS Advertisements and processed $totalDNS DNS Queries"
 rm $adsdata
-rm $dnsdata 
+rm $dnsdata
+#We need to write todays totals to avoid missing todays date
+echo $DNSQUERIESTODAY >> $dnsdata
+echo $ADSBLOCKEDTODAY >> $adsdata
 fi
-  
+
 else
 echo -e "Don't Run Monthly"
 fi
